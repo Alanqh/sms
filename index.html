@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>点击发送短信</title>
+    <style>
+        body { margin: 0; padding: 20px; font-family: sans-serif; text-align: center; }
+        .btn { padding: 15px 30px; font-size: 18px; background: #07C160; color: white; border: none; border-radius: 8px; cursor: pointer; margin-top: 50px; }
+        .btn:hover { background: #06A856; }
+        .tip { color: #666; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>请点击下方按钮发送短信</h1>
+    <button class="btn" id="sendSms">唤起短信APP</button>
+    <p class="tip">若未自动唤起，请在浏览器中打开并允许跳转</p>
+
+    <script>
+        // 解析URL参数（接收方号码和短信内容）
+        const params = new URLSearchParams(window.location.search);
+        const phone = params.get('phone') || '';
+        const content = params.get('content') || '';
+
+        // 唤起短信APP
+        document.getElementById('sendSms').addEventListener('click', () => {
+            if (!phone) { alert('请指定接收方号码'); return; }
+            // 短信协议：iOS/Android通用（content需URL编码）
+            const encodedContent = encodeURIComponent(content);
+            const smsUrl = `sms:${phone}?body=${encodedContent}`;
+            window.location.href = smsUrl;
+        });
+    </script>
+</body>
+</html>
